@@ -30,10 +30,34 @@ User.all.each do |user|
     User.all.reject { |u2| u2 == user}.each do |u2|
       perm = rand(1..3)
       if perm == 1
-        user.make_list_readable_for_user(list, u2)
+        user.make_list_readable_for_viewer(list, u2)
       elsif perm == 2
-        user.make_list_writeable_for_user(list, u2)
+        user.make_list_writeable_for_viewer(list, u2)
       end
+    end
+  end
+end
+
+groups = ["Frogs", "Toads", "Foxes", "Squirrels", "Salamanders"]
+
+User.all.each do |user|
+  coin = rand(1..2)
+  if coin == 1
+    group = user.groups.create(username: Faker::Company.name)
+    list = group.create_list(Faker::Company.bs)
+    User.all.reject { |u2| u2 == user}.each do |u2|
+      coin2 = rand(1..4)
+      if coin2 == 1
+        group.users << u2
+        coin3 = rand(1..3)
+        ug = group.user_groups.find_by(user: u2)
+        ug.update(access_level: coin3)
+      elsif coin2 == 2
+        group.users << u2
+        group.make_admin(u2)
+
+      end
+
     end
   end
 end
