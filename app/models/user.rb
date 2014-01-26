@@ -1,15 +1,19 @@
 require_relative 'list_permissions'
-#require_relative 'list_owner'
+require_relative 'list_viewer'
 
 class User < ListViewer
   has_many :user_groups
   has_many :groups, through: :user_groups, class_name: "Group"
   has_many :admin_groups, -> { where "access_level > 3" }, through: :user_groups, source: :group
   has_many :group_lists, through: :groups, source: :lists
-  
+
   # def all_group_lists
   #   self.groups.reduce([]) { |group| group_lists(group) }
   # end
+
+  def create_group(group_name)
+    group = self.groups.create(username: group_name, creator: self)
+  end
 
   def make_list_readable_for_viewer(list, viewer)
     ListPermission.create(list: list, list_viewer: viewer, permission: 1)

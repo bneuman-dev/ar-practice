@@ -1,0 +1,17 @@
+<div class="container">
+<% @list.tasks.reject { |t| t.completed }.each do |task| %>
+  <p><%= @list.tasks.index(task) %>: <%= task.desc %></p>
+  <p>Priority Level: <%= task.priority_level.level %></p>
+  <p>Deadline: <%= task.deadline %></p>
+  <p>
+    <form action="/lists/<%= @list.id %>/tasks/<%= @list.tasks.index(task) %>/mark_complete" method="post">
+    <input type="hidden" name="_method" value="PUT" />
+    <input type="checkbox" name="complete" <%= "checked" if task.completed %> /> Completed 
+    <input type="submit" />  
+  </form></p>
+  <p></p>
+<% end %>
+
+<p><a href="/lists/<%= @list.id %>/completed">View completed tasks</a></p>
+<p><a href="/lists/<%= @list.id %>/all">View all tasks</a></p>
+</div>

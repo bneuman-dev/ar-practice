@@ -1,0 +1,12 @@
+<div class="container">
+<% @list.tasks.each do |task| %>
+  <p><%= @list.tasks.index(task) %>: <%= task.desc %></p>
+  <p>Priority Level: <%= task.priority_level.level %></p>
+  <p>Deadline: <%= task.deadline %></p>
+  <p>Completed: <% if task.completed %> YES <% else %> NO <% end %></p>
+  <p></p>
+<% end %>
+
+<p><a href="/lists/<%= @list.id %>/completed">View completed tasks</a></p>
+<p><a href="/lists/<%= @list.id %>/">View uncompleted tasks</a></p>
+</div>
